@@ -20,7 +20,7 @@ namespace App.Domain.Services
         }
 
 
-        public async Task<TodoItemDto?> GetById(int id,CancellationToken cancellationToken)
+        public async Task<TodoItemDto> GetById(int id,CancellationToken cancellationToken)
         {
             return await _todoRepository.GetById(id,cancellationToken);
         }
@@ -46,19 +46,6 @@ namespace App.Domain.Services
         public async Task Delete(int id,CancellationToken cancellationToken)
         {
             await _todoRepository.Delete(id,cancellationToken);
-        }
-
-
-        public async Task Complete(int id,CancellationToken cancellationToken)
-        {
-            await _todoRepository.Complete(id,cancellationToken);
-        }
-
-    
-
-        public async Task Uncomplete(int id,CancellationToken cancellationToken)
-        {
-            await _todoRepository.Uncomplete(id,cancellationToken);
         }
     }
 }

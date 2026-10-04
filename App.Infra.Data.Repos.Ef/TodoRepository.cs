@@ -32,7 +32,7 @@ namespace App.Infra.Data.Repos.Ef
         }
 
 
-        public async Task<TodoItemDto?> GetById(int id,CancellationToken cancellationToken)
+        public async Task<TodoItemDto> GetById(int id,CancellationToken cancellationToken)
         {
             var item = await _context.TodoItems
                 .Where(x => x.Id == id)
@@ -64,7 +64,9 @@ namespace App.Infra.Data.Repos.Ef
                 CompleteAt = item.CompleteAt
             };
 
-            await _context.TodoItems.AddAsync(todoItem,cancellationToken);
+            await _context.TodoItems.AddAsync(
+                todoItem,
+                cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
         }
@@ -73,48 +75,14 @@ namespace App.Infra.Data.Repos.Ef
         public async Task Delete(int id,CancellationToken cancellationToken)
         {
             var todoItem = await _context.TodoItems
-                .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
+                .FirstOrDefaultAsync(
+                    x => x.Id == id,
+                    cancellationToken);
 
             if (todoItem == null)
                 return;
 
             _context.TodoItems.Remove(todoItem);
-
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-        
-
-        public async Task Complete(int id,CancellationToken cancellationToken)
-        {
-            var todoItem = await _context.TodoItems
-                .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
-
-            if (todoItem is null)
-                return;
-
-            if (todoItem.IsComplete)
-                return;
-
-            todoItem.IsComplete = true;
-            todoItem.CompleteAt = DateTime.Now;
-
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-
-       
-        public async Task Uncomplete(int id,CancellationToken cancellationToken)
-        {
-            var todoItem = await _context.TodoItems
-                .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
-
-            if (todoItem is null)
-                return;
-
-            if (!todoItem.IsComplete)
-                return;
-
-            todoItem.IsComplete = false;
-            todoItem.CompleteAt = null;
 
             await _context.SaveChangesAsync(cancellationToken);
         }

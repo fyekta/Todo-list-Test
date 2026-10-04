@@ -17,10 +17,6 @@ namespace App.Domain.Core.Contract.Repository
         Task Add (TodoItemDto item , CancellationToken cancellationToken);
 
         Task Delete (int id , CancellationToken cancellationToken);
-     
-        Task Complete(int id,CancellationToken cancellationToken);
-
-        Task Uncomplete(int id,CancellationToken cancellationToken);
 
     }
 }
