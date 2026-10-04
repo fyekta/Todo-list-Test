@@ -51,7 +51,7 @@ namespace App.Domain.Services
 
         public async Task Complete(int id,CancellationToken cancellationToken)
         {
-            await _todoRepository.Complete(id,cancellationToken);
+            await _todoRepository.Complete(id, cancellationToken);
         }
 
     
