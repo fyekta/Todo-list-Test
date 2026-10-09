@@ -89,12 +89,6 @@ namespace App.Infra.Data.Repos.Ef
             var todoItem = await _context.TodoItems
                 .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
 
-            if (todoItem is null)
-                return;
-
-            if (todoItem.IsComplete)
-                return;
-
             todoItem.IsComplete = true;
             todoItem.CompleteAt = DateTime.Now;
 
@@ -107,14 +101,22 @@ namespace App.Infra.Data.Repos.Ef
             var todoItem = await _context.TodoItems
                 .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
 
+            todoItem.IsComplete = false;
+            todoItem.CompleteAt = null;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        public async Task Update(int id,TodoItemDto item,CancellationToken cancellationToken)
+        {
+            var todoItem = await _context.TodoItems
+                .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
+
             if (todoItem is null)
                 return;
 
-            if (!todoItem.IsComplete)
-                return;
-
-            todoItem.IsComplete = false;
-            todoItem.CompleteAt = null;
+            todoItem.Title = item.Title;
+            todoItem.Description = item.Description;
+            todoItem.DueDate = item.DueDate;
 
             await _context.SaveChangesAsync(cancellationToken);
         }

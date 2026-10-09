@@ -19,5 +19,7 @@ namespace App.Domain.Core.Contract.Appservice
         Task Complete(int id,CancellationToken cancellationToken);
 
         Task Uncomplete(int id,CancellationToken cancellationToken);
+
+        Task Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken);
     }
 }

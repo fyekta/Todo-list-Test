@@ -70,5 +70,12 @@ namespace App.WebApi.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken)
+        {
+            await _todoAppService.Update(id,title,description,dueDate,cancellationToken);
+
+            return Ok();
+        }
     }
 }

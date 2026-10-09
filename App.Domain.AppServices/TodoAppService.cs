@@ -52,5 +52,9 @@ namespace App.Domain.AppServices
         {
              await _todoService.Uncomplete(id,cancellationToken);
         }
+        public async Task Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken)
+        {
+            await _todoService.Update(id,title,description,dueDate,cancellationToken);
+        }
     }
 }
