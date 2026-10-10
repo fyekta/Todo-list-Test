@@ -13,10 +13,15 @@ namespace App.Domain.Core.Contract.Service
     {
         Task<List<TodoItemDto>> GetAll(CancellationToken cancellationToken);
 
-        Task<TodoItemDto> GetById(int id,CancellationToken cancellationToken);
+        Task<TodoItemDto?> GetById(int id,CancellationToken cancellationToken);
 
         Task Add(string title, string description, DateTime dueDate, CancellationToken cancellationToken);
 
         Task Delete(int id, CancellationToken cancellationToken);
+        
+        Task Complete(int id,CancellationToken cancellationToken);
+
+        Task Uncomplete(int id,CancellationToken cancellationToken);
+        Task Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken);
     }
 }
