@@ -5,7 +5,9 @@ using App.Domain.Core.Contract.Service;
 using App.Domain.Services;
 using App.Infra.Data.Db.SqlServer.Ef.Dbctx;
 using App.Infra.Data.Repos.Ef;
+using App.WebApi.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,9 @@ builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<ITodoAppService, TodoAppService>();
 
 var app = builder.Build();
+app.UseMiddleware<GetOnlyMiddleware>();
+app.UseMiddleware<RequestLoggingMiddleware>();
+
 
 if (app.Environment.IsDevelopment())
 {

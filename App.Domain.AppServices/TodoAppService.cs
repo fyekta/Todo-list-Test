@@ -25,7 +25,7 @@ namespace App.Domain.AppServices
         }
 
 
-        public async Task<TodoItemDto> GetById(int id,CancellationToken cancellationToken)
+        public async Task<TodoItemDto?> GetById(int id,CancellationToken cancellationToken)
         {
             return await _todoService.GetById(id,cancellationToken);
         }
@@ -40,6 +40,21 @@ namespace App.Domain.AppServices
         public async Task Delete(int id,CancellationToken cancellationToken)
         {
             await _todoService.Delete(id,cancellationToken);
+        }
+
+
+        public async Task Complete(int id,CancellationToken cancellationToken)
+        {
+             await _todoService.Complete(id,cancellationToken);
+        }
+
+        public async Task Uncomplete(int id,CancellationToken cancellationToken)
+        {
+             await _todoService.Uncomplete(id,cancellationToken);
+        }
+        public async Task Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken)
+        {
+            await _todoService.Update(id,title,description,dueDate,cancellationToken);
         }
     }
 }
