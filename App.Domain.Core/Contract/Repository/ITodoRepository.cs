@@ -22,6 +22,6 @@ namespace App.Domain.Core.Contract.Repository
 
         Task Uncomplete(int id,CancellationToken cancellationToken);
         Task Update(int id,TodoItemDto item,CancellationToken cancellationToken);
-
+        
     }
 }

@@ -31,12 +31,12 @@ namespace App.Domain.AppServices
         }
 
 
-        public async Task Add(string title, string description, DateTime dueDate, CancellationToken cancellationToken)
+        public async Task Add(string title, string description, DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
-            await _todoService.Add(title,description,dueDate,cancellationToken);
+            await _todoService.Add(title,description,dueDate, categoryId,cancellationToken);
         }
 
-
+              
         public async Task Delete(int id,CancellationToken cancellationToken)
         {
             await _todoService.Delete(id,cancellationToken);
@@ -52,9 +52,9 @@ namespace App.Domain.AppServices
         {
              await _todoService.Uncomplete(id,cancellationToken);
         }
-        public async Task Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken)
+        public async Task Update(int id,string title,string description,DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
-            await _todoService.Update(id,title,description,dueDate,cancellationToken);
+            await _todoService.Update(id,title,description,dueDate, categoryId, cancellationToken);
         }
     }
 }

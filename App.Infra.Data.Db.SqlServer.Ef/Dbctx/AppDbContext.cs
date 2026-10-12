@@ -8,6 +8,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Dbctx
      : DbContext(options)
     {
         public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

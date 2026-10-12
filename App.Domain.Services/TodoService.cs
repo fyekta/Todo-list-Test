@@ -8,12 +8,15 @@ namespace App.Domain.Services
     public class TodoService : ITodoService
     {
         private readonly ITodoRepository _todoRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public TodoService(ITodoRepository todoRepository)
+        public TodoService(
+            ITodoRepository todoRepository,
+            ICategoryRepository categoryRepository)
         {
             _todoRepository = todoRepository;
+            _categoryRepository = categoryRepository;
         }
-
 
         public async Task<List<TodoItemDto>> GetAll(CancellationToken cancellationToken)
         {
@@ -27,26 +30,29 @@ namespace App.Domain.Services
         }
 
 
-        public async Task Add(string title, string description, DateTime dueDate, CancellationToken cancellationToken)
+        public async Task Add(string title, string description, DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(title))
-                throw new ValidationException(
-                    "Title is required.");
+                throw new ValidationException("Title is required.");
 
             if (title.Trim().Length < 3 || title.Trim().Length > 150)
             {
-                throw new ValidationException(
-                    "Title must be between 3 and 150 characters.");
+                throw new ValidationException("Title must be between 3 and 150 characters.");
             }
 
             if (string.IsNullOrWhiteSpace(description))
-                throw new ValidationException(
-                    "Description is required.");
+                throw new ValidationException("Description is required.");
 
             if (description.Trim().Length < 3 || description.Trim().Length > 500)
             {
-                throw new ValidationException(
-                    "Description must be between 3 and 500 characters.");
+                throw new ValidationException("Description must be between 3 and 500 characters.");
+            }
+            if (categoryId.HasValue)
+            {
+                var category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
+
+                if (category is null)
+                    throw new KeyNotFoundException("Category not found.");
             }
 
             var dto = new TodoItemDto
@@ -56,7 +62,8 @@ namespace App.Domain.Services
                 DueDate = dueDate,
                 CreatedAt = DateTime.Now,
                 IsComplete = false,
-                CompleteAt = null
+                CompleteAt = null ,
+                CategoryId = categoryId
             };
 
             await _todoRepository.Add(dto, cancellationToken);
@@ -69,14 +76,12 @@ namespace App.Domain.Services
 
             if (todoItem is null)
             {
-                throw new KeyNotFoundException(
-                    $"Todo with id {id} was not found.");
+                throw new KeyNotFoundException($"Todo with id {id} was not found.");
             }
 
             if (todoItem.IsComplete)
             {
-                throw new InvalidOperationException(
-                    "Completed todo cannot be deleted.");
+                throw new InvalidOperationException("Completed todo cannot be deleted.");
             }
 
             await _todoRepository.Delete(id,cancellationToken);
@@ -89,14 +94,12 @@ namespace App.Domain.Services
 
             if (todoItem is null)
             {
-                throw new KeyNotFoundException(
-                    $"Todo with id {id} was not found.");
+                throw new KeyNotFoundException($"Todo with id {id} was not found.");
             }
 
             if (todoItem.IsComplete)
             {
-                throw new InvalidOperationException(
-                    "Todo is already completed.");
+                throw new InvalidOperationException("Todo is already completed.");
             }
             await _todoRepository.Complete(id, cancellationToken);
         }
@@ -109,45 +112,48 @@ namespace App.Domain.Services
 
             if (todoItem is null)
             {
-                throw new KeyNotFoundException(
-                    $"Todo with id {id} was not found.");
+                throw new KeyNotFoundException($"Todo with id {id} was not found.");
             }
 
             if (!todoItem.IsComplete)
             {
-                throw new InvalidOperationException(
-                    "Todo is already uncompleted.");
+                throw new InvalidOperationException("Todo is already uncompleted.");
             }
             await _todoRepository.Uncomplete(id,cancellationToken);
         }
 
-        public async Task Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken)
+        public async Task Update(int id,string title,string description,DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(title))
-                throw new ValidationException(
-                    "Title is required.");
+                throw new ValidationException("Title is required.");
 
             if (title.Trim().Length < 3 || title.Trim().Length > 150)
             {
-                throw new ValidationException(
-                    "Title must be between 3 and 150 characters.");
+                throw new ValidationException("Title must be between 3 and 150 characters.");
             }
 
             if (string.IsNullOrWhiteSpace(description))
-                throw new ValidationException(
-                    "Description is required.");
+                throw new ValidationException("Description is required.");
 
             if (description.Trim().Length < 3 || description.Trim().Length > 500)
             {
-                throw new ValidationException(
-                    "Description must be between 3 and 500 characters.");
+                throw new ValidationException("Description must be between 3 and 500 characters.");
+            }
+
+            if (categoryId.HasValue)
+            {
+                var category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
+
+                if (category is null)
+                    throw new KeyNotFoundException("Category not found.");
             }
 
             var dto = new TodoItemDto
             {
                 Title = title.Trim(),
                 Description = description.Trim(),
-                DueDate = dueDate
+                DueDate = dueDate ,
+                CategoryId = categoryId
             };
 
             await _todoRepository.Update(id,dto,cancellationToken);

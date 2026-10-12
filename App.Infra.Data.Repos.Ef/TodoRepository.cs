@@ -26,13 +26,14 @@ namespace App.Infra.Data.Repos.Ef
                     IsComplete = x.IsComplete,
                     DueDate = x.DueDate,
                     CreatedAt = x.CreatedAt,
-                    CompleteAt = x.CompleteAt
+                    CompleteAt = x.CompleteAt,
+                    CategoryId = x.CategoryId
                 })
                 .ToListAsync(cancellationToken);
         }
 
 
-        public async Task<TodoItemDto?> GetById(int id,CancellationToken cancellationToken)
+        public async Task<TodoItemDto?> GetById(int id, CancellationToken cancellationToken)
         {
             var item = await _context.TodoItems
                 .Where(x => x.Id == id)
@@ -44,7 +45,8 @@ namespace App.Infra.Data.Repos.Ef
                     IsComplete = x.IsComplete,
                     DueDate = x.DueDate,
                     CreatedAt = x.CreatedAt,
-                    CompleteAt = x.CompleteAt
+                    CompleteAt = x.CompleteAt,
+                    CategoryId = x.CategoryId
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -52,7 +54,7 @@ namespace App.Infra.Data.Repos.Ef
         }
 
 
-        public async Task Add(TodoItemDto item,CancellationToken cancellationToken)
+        public async Task Add(TodoItemDto item, CancellationToken cancellationToken)
         {
             var todoItem = new TodoItem
             {
@@ -61,10 +63,11 @@ namespace App.Infra.Data.Repos.Ef
                 IsComplete = item.IsComplete,
                 DueDate = item.DueDate,
                 CreatedAt = item.CreatedAt,
-                CompleteAt = item.CompleteAt
+                CompleteAt = item.CompleteAt,
+                CategoryId = item.CategoryId
             };
 
-            await _context.TodoItems.AddAsync(todoItem,cancellationToken);
+            await _context.TodoItems.AddAsync(todoItem, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
         }
@@ -82,7 +85,7 @@ namespace App.Infra.Data.Repos.Ef
 
             await _context.SaveChangesAsync(cancellationToken);
         }
-        
+
 
         public async Task Complete(int id,CancellationToken cancellationToken)
         {
@@ -95,7 +98,7 @@ namespace App.Infra.Data.Repos.Ef
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-       
+
         public async Task Uncomplete(int id,CancellationToken cancellationToken)
         {
             var todoItem = await _context.TodoItems
@@ -106,10 +109,10 @@ namespace App.Infra.Data.Repos.Ef
 
             await _context.SaveChangesAsync(cancellationToken);
         }
-        public async Task Update(int id,TodoItemDto item,CancellationToken cancellationToken)
+        public async Task Update(int id, TodoItemDto item, CancellationToken cancellationToken)
         {
             var todoItem = await _context.TodoItems
-                .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             if (todoItem is null)
                 return;
@@ -117,8 +120,10 @@ namespace App.Infra.Data.Repos.Ef
             todoItem.Title = item.Title;
             todoItem.Description = item.Description;
             todoItem.DueDate = item.DueDate;
+            todoItem.CategoryId = item.CategoryId;
 
             await _context.SaveChangesAsync(cancellationToken);
         }
+
     }
 }

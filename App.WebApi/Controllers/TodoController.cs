@@ -7,11 +7,11 @@ namespace App.WebApi.Controllers
    
     [ApiController]
     [Route("api/[controller]")]
-    public class HomeController : ControllerBase
+    public class TodoController : ControllerBase
     {
         private readonly ITodoAppService _todoAppService;
 
-        public HomeController(ITodoAppService todoAppService)
+        public TodoController(ITodoAppService todoAppService)
         {
             _todoAppService = todoAppService;
         }
@@ -36,9 +36,9 @@ namespace App.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add( string title , string description, DateTime dueDate,CancellationToken cancellationToken)
+        public async Task<IActionResult> Add( string title , string description, DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
-            await _todoAppService.Add(title,description,dueDate, cancellationToken);
+            await _todoAppService.Add(title,description,dueDate, categoryId, cancellationToken);
 
             return Ok();
         }
@@ -71,9 +71,9 @@ namespace App.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id,string title,string description,DateTime dueDate,CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id,string title,string description,DateTime dueDate,int? categoryId, CancellationToken cancellationToken)
         {
-            await _todoAppService.Update(id,title,description,dueDate,cancellationToken);
+            await _todoAppService.Update(id,title,description,dueDate,categoryId, cancellationToken);
 
             return Ok();
         }
