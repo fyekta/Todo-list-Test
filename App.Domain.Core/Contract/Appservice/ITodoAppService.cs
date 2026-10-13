@@ -9,7 +9,7 @@ namespace App.Domain.Core.Contract.Appservice
 {
     public interface ITodoAppService
     {
-        Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete,int? categoryId, CancellationToken cancellationToken);
+        Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, List<int>? categoryIds, CancellationToken cancellationToken);
 
         Task<TodoItemDto?> GetById(int id,CancellationToken cancellationToken);
 

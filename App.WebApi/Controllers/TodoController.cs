@@ -17,9 +17,9 @@ namespace App.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(string? keyWord, bool? isComplete,int? categoryId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll(string? keyWord, bool? isComplete, [FromQuery] List<int>? categoryIds, CancellationToken cancellationToken)
         {
-            var items = await _todoAppService.GetAll(keyWord, isComplete, categoryId, cancellationToken);
+            var items = await _todoAppService.GetAll(keyWord, isComplete, categoryIds, cancellationToken);
 
             return Ok(items);
         }

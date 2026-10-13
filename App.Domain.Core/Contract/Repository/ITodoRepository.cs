@@ -10,7 +10,7 @@ namespace App.Domain.Core.Contract.Repository
 {
     public interface ITodoRepository
     {
-       Task<List<TodoItemDto>> GetAll (string? keyWord, bool? isComplete, int? categoryId, CancellationToken cancellationToken);
+       Task<List<TodoItemDto>> GetAll (string? keyWord, bool? isComplete, List<int>? categoryIds, CancellationToken cancellationToken);
 
         Task<TodoItemDto?> GetById (int id , CancellationToken cancellationToken);
 

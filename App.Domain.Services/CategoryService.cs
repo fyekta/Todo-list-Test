@@ -36,10 +36,14 @@ namespace App.Domain.Services
             public async Task Add(CategoryDto category, CancellationToken cancellationToken)
             {
                 if (category is null)
-                    throw new ValidationException("Category is required.");
-
+                {
+                   throw new ValidationException("Category is required.");
+                }
+                   
                 if (string.IsNullOrWhiteSpace(category.Title))
-                    throw new ValidationException("Title is required.");
+                {
+                   throw new ValidationException("Title is required.");
+                }        
 
                 if (category.Title.Trim().Length < 3 || category.Title.Trim().Length > 100)
                 {
@@ -47,14 +51,15 @@ namespace App.Domain.Services
                 }
 
                 if (string.IsNullOrWhiteSpace(category.Color))
+                {
                     throw new ValidationException("Color is required.");
+                }
 
                 if (!Regex.IsMatch(category.Color, "^#[0-9A-Fa-f]{6}$"))
-            {
+                {
                 throw new ValidationException("Color must be a valid HEX code.");
-            }
+                }
 
-            category.Title = category.Title.Trim();
 
                 await _categoryRepository.Add(category, cancellationToken);
             }
@@ -69,10 +74,15 @@ namespace App.Domain.Services
                 }
 
                 if (category is null)
-                    throw new ValidationException("Category is required.");
+                {
+                   throw new ValidationException("Category is required.");
+                }
+                    
 
-                if (string.IsNullOrWhiteSpace(category.Title))
+                if (string.IsNullOrWhiteSpace(category.Title)) 
+                {
                     throw new ValidationException("Title is required.");
+                }   
 
                 if (category.Title.Trim().Length < 3 || category.Title.Trim().Length > 100)
                 {
@@ -80,14 +90,14 @@ namespace App.Domain.Services
                 }
 
                 if (string.IsNullOrWhiteSpace(category.Color))
+                {
                     throw new ValidationException("Color is required.");
+                }
 
                 if (!Regex.IsMatch(category.Color, "^#[0-9A-Fa-f]{6}$"))
-            {
+                {
                 throw new ValidationException("Color must be a valid HEX code.");
-            }
-
-            category.Title = category.Title.Trim();
+                }
 
                 await _categoryRepository.Update(id, category, cancellationToken);
             }

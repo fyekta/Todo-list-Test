@@ -19,9 +19,9 @@ namespace App.Domain.AppServices
         }
 
 
-        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, int? categoryId, CancellationToken cancellationToken)
+        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, List<int>? categoryIds, CancellationToken cancellationToken)
         {
-            return await _todoService.GetAll(keyWord, isComplete,categoryId, cancellationToken);
+            return await _todoService.GetAll(keyWord, isComplete, categoryIds, cancellationToken);
         }
 
 

@@ -15,12 +15,12 @@ namespace App.Infra.Data.Repos.Ef
             _context = context;
         }
 
-        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete,int? categoryId, CancellationToken cancellationToken)
+        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, List<int>? categoryIds, CancellationToken cancellationToken)
         {
             var query = _context.TodoItems.AsQueryable();
 
-            if (categoryId != null)
-                query = query.Where(p => p.CategoryId == categoryId);
+            if (categoryIds != null && categoryIds.Count > 0)
+                query = query.Where(p =>p.CategoryId.HasValue && categoryIds.Contains(p.CategoryId.Value));
 
             if (isComplete != null)
                 query = query.Where(p => p.IsComplete == isComplete);

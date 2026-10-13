@@ -18,9 +18,9 @@ namespace App.Domain.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, int? categoryId, CancellationToken cancellationToken)
+        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, List<int>? categoryIds, CancellationToken cancellationToken)
         {
-            return await _todoRepository.GetAll(keyWord, isComplete,categoryId, cancellationToken);
+            return await _todoRepository.GetAll(keyWord, isComplete, categoryIds, cancellationToken);
         }
 
 
@@ -32,8 +32,11 @@ namespace App.Domain.Services
 
         public async Task Add(string title, string description, DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(title))
+            if (string.IsNullOrWhiteSpace(title)) 
+            {
                 throw new ValidationException("Title is required.");
+            }
+                
 
             if (title.Trim().Length < 3 || title.Trim().Length > 150)
             {
@@ -47,12 +50,16 @@ namespace App.Domain.Services
             {
                 throw new ValidationException("Description must be between 3 and 500 characters.");
             }
+
             if (categoryId.HasValue)
             {
                 var category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
 
                 if (category is null)
+                {
                     throw new KeyNotFoundException("Category not found.");
+                }
+                    
             }
 
             var dto = new TodoItemDto
@@ -125,7 +132,9 @@ namespace App.Domain.Services
         public async Task Update(int id,string title,string description,DateTime dueDate, int? categoryId, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(title))
+            {
                 throw new ValidationException("Title is required.");
+            }
 
             if (title.Trim().Length < 3 || title.Trim().Length > 150)
             {
@@ -133,7 +142,9 @@ namespace App.Domain.Services
             }
 
             if (string.IsNullOrWhiteSpace(description))
+            {
                 throw new ValidationException("Description is required.");
+            }
 
             if (description.Trim().Length < 3 || description.Trim().Length > 500)
             {
@@ -145,7 +156,9 @@ namespace App.Domain.Services
                 var category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
 
                 if (category is null)
+                {
                     throw new KeyNotFoundException("Category not found.");
+                }
             }
 
             var dto = new TodoItemDto
