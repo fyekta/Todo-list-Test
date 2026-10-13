@@ -18,9 +18,9 @@ namespace App.Domain.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<List<TodoItemDto>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, int? categoryId, CancellationToken cancellationToken)
         {
-            return await _todoRepository.GetAll(cancellationToken);
+            return await _todoRepository.GetAll(keyWord, isComplete,categoryId, cancellationToken);
         }
 
 

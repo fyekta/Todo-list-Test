@@ -12,16 +12,16 @@ namespace App.Domain.AppServices
     public class TodoAppService : ITodoAppService
     {
         private readonly ITodoService _todoService;
-
+       
         public TodoAppService(ITodoService todoService)
         {
-            _todoService = todoService;
+            _todoService = todoService;  
         }
 
 
-        public async Task<List<TodoItemDto>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, int? categoryId, CancellationToken cancellationToken)
         {
-            return await _todoService.GetAll(cancellationToken);
+            return await _todoService.GetAll(keyWord, isComplete,categoryId, cancellationToken);
         }
 
 

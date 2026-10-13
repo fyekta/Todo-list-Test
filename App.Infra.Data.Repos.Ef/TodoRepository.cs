@@ -15,9 +15,20 @@ namespace App.Infra.Data.Repos.Ef
             _context = context;
         }
 
-        public async Task<List<TodoItemDto>> GetAll(CancellationToken cancellationToken)
+        public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete,int? categoryId, CancellationToken cancellationToken)
         {
-            return await _context.TodoItems
+            var query = _context.TodoItems.AsQueryable();
+
+            if (categoryId != null)
+                query = query.Where(p => p.CategoryId == categoryId);
+
+            if (isComplete != null)
+                query = query.Where(p => p.IsComplete == isComplete);
+
+            if (keyWord != null && keyWord != "")
+                query = query.Where(p => p.Title.Contains(keyWord) || p.Description.Contains(keyWord));
+
+            var result = await query
                 .Select(x => new TodoItemDto
                 {
                     Id = x.Id,
@@ -30,6 +41,7 @@ namespace App.Infra.Data.Repos.Ef
                     CategoryId = x.CategoryId
                 })
                 .ToListAsync(cancellationToken);
+            return result;
         }
 
 
