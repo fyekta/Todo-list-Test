@@ -32,7 +32,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task<CategoryDto?> GetById(int id, CancellationToken cancellationToken)
         {
-            var item = await _context.Categories
+            CategoryDto? item = await _context.Categories
                 .Where(x => x.Id == id)
                 .Select(x => new CategoryDto
                 {
@@ -48,7 +48,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Add(CategoryDto item, CancellationToken cancellationToken)
         {
-            var categoryItem = new Category
+            Category categoryItem = new Category
             {
                 Title = item.Title,
                 Color = item.Color
@@ -62,7 +62,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            var categoryItem = await _context.Categories
+            Category? categoryItem = await _context.Categories
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             if (categoryItem is null)
@@ -76,7 +76,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Update(int id, CategoryDto item, CancellationToken cancellationToken)
         {
-            var categoryItem = await _context.Categories
+            Category? categoryItem = await _context.Categories
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             if (categoryItem is null)

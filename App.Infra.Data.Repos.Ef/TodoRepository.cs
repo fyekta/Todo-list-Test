@@ -17,7 +17,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task<List<TodoItemDto>> GetAll(string? keyWord, bool? isComplete, List<int>? categoryIds, CancellationToken cancellationToken)
         {
-            var query = _context.TodoItems.AsQueryable();
+            IQueryable<TodoItem> query = _context.TodoItems.AsQueryable();
 
             if (categoryIds != null && categoryIds.Count > 0)
                 query = query.Where(p =>p.CategoryId.HasValue && categoryIds.Contains(p.CategoryId.Value));
@@ -25,10 +25,10 @@ namespace App.Infra.Data.Repos.Ef
             if (isComplete != null)
                 query = query.Where(p => p.IsComplete == isComplete);
 
-            if (keyWord != null && keyWord != "")
+            if (keyWord != null && keyWord != "") // string.
                 query = query.Where(p => p.Title.Contains(keyWord) || p.Description.Contains(keyWord));
 
-            var result = await query
+            List<TodoItemDto> result = await query
                 .Select(x => new TodoItemDto
                 {
                     Id = x.Id,
@@ -47,7 +47,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task<TodoItemDto?> GetById(int id, CancellationToken cancellationToken)
         {
-            var item = await _context.TodoItems
+            TodoItemDto? item = await _context.TodoItems
                 .Where(x => x.Id == id)
                 .Select(x => new TodoItemDto
                 {
@@ -68,7 +68,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Add(TodoItemDto item, CancellationToken cancellationToken)
         {
-            var todoItem = new TodoItem
+            TodoItem todoItem = new TodoItem
             {
                 Title = item.Title,
                 Description = item.Description,
@@ -87,7 +87,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Delete(int id,CancellationToken cancellationToken)
         {
-            var todoItem = await _context.TodoItems
+            TodoItem? todoItem = await _context.TodoItems
                 .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
 
             if (todoItem == null)
@@ -101,7 +101,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Complete(int id,CancellationToken cancellationToken)
         {
-            var todoItem = await _context.TodoItems
+            TodoItem? todoItem = await _context.TodoItems
                 .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
 
             todoItem.IsComplete = true;
@@ -113,7 +113,7 @@ namespace App.Infra.Data.Repos.Ef
 
         public async Task Uncomplete(int id,CancellationToken cancellationToken)
         {
-            var todoItem = await _context.TodoItems
+            TodoItem? todoItem = await _context.TodoItems
                 .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
 
             todoItem.IsComplete = false;
@@ -123,7 +123,7 @@ namespace App.Infra.Data.Repos.Ef
         }
         public async Task Update(int id, TodoItemDto item, CancellationToken cancellationToken)
         {
-            var todoItem = await _context.TodoItems
+            TodoItem? todoItem = await _context.TodoItems
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             if (todoItem is null)

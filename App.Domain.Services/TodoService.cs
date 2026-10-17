@@ -53,7 +53,7 @@ namespace App.Domain.Services
 
             if (categoryId.HasValue)
             {
-                var category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
+                CategoryDto? category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
 
                 if (category is null)
                 {
@@ -62,7 +62,7 @@ namespace App.Domain.Services
                     
             }
 
-            var dto = new TodoItemDto
+            TodoItemDto dto = new TodoItemDto
             {
                 Title = title.Trim(),
                 Description = description.Trim(),
@@ -97,7 +97,7 @@ namespace App.Domain.Services
 
         public async Task Complete(int id,CancellationToken cancellationToken)
         {
-            var todoItem = await _todoRepository.GetById(id,cancellationToken);
+            TodoItemDto? todoItem = await _todoRepository.GetById(id,cancellationToken);
 
             if (todoItem is null)
             {
@@ -115,7 +115,7 @@ namespace App.Domain.Services
 
         public async Task Uncomplete(int id,CancellationToken cancellationToken)
         {
-            var todoItem = await _todoRepository.GetById(id,cancellationToken);
+            TodoItemDto? todoItem = await _todoRepository.GetById(id,cancellationToken);
 
             if (todoItem is null)
             {
@@ -153,7 +153,7 @@ namespace App.Domain.Services
 
             if (categoryId.HasValue)
             {
-                var category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
+                CategoryDto? category = await _categoryRepository.GetById(categoryId.Value, cancellationToken);
 
                 if (category is null)
                 {
@@ -161,7 +161,7 @@ namespace App.Domain.Services
                 }
             }
 
-            var dto = new TodoItemDto
+            TodoItemDto dto = new TodoItemDto
             {
                 Title = title.Trim(),
                 Description = description.Trim(),

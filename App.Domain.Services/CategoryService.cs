@@ -23,7 +23,7 @@ namespace App.Domain.Services
 
             public async Task<CategoryDto> GetById(int id, CancellationToken cancellationToken)
             {
-                var category = await _categoryRepository.GetById(id, cancellationToken);
+              CategoryDto? category = await _categoryRepository.GetById(id, cancellationToken);
 
                 if (category is null)
                 {
@@ -66,7 +66,7 @@ namespace App.Domain.Services
 
             public async Task Update(int id, CategoryDto category, CancellationToken cancellationToken)
             {
-                var categoryItem = await _categoryRepository.GetById(id, cancellationToken);
+              CategoryDto? categoryItem = await _categoryRepository.GetById(id, cancellationToken);
 
                 if (categoryItem is null)
                 {

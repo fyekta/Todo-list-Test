@@ -18,7 +18,7 @@ namespace App.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var categories = await _categoryAppService.GetAll(cancellationToken);
+            List<CategoryDto> categories = await _categoryAppService.GetAll(cancellationToken);
 
             return Ok(categories);
         }
@@ -27,7 +27,7 @@ namespace App.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
-            var category = await _categoryAppService.GetById(id, cancellationToken);
+            CategoryDto category = await _categoryAppService.GetById(id, cancellationToken);
 
             return Ok(category);
         }

@@ -19,7 +19,7 @@ namespace App.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(string? keyWord, bool? isComplete, [FromQuery] List<int>? categoryIds, CancellationToken cancellationToken)
         {
-            var items = await _todoAppService.GetAll(keyWord, isComplete, categoryIds, cancellationToken);
+            List<TodoItemDto> items = await _todoAppService.GetAll(keyWord, isComplete, categoryIds, cancellationToken);
 
             return Ok(items);
         }
@@ -27,7 +27,7 @@ namespace App.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id,CancellationToken cancellationToken)
         {
-            var item = await _todoAppService.GetById(id, cancellationToken);
+            TodoItemDto? item = await _todoAppService.GetById(id, cancellationToken);
 
             if (item == null)
                 return NotFound();
